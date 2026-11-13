@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pwa-contato-v2';
+const CACHE_NAME = 'pwa-contato-v3';
 const urlsToCache = [
     './index.html',
     './manifest.json',
@@ -6,7 +6,7 @@ const urlsToCache = [
     './icon-512.png'
 ];
 
-// Instala o Service Worker e guarda os arquivos em cache
+// Instala o Service Worker e atualiza o cache
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -17,7 +17,7 @@ self.addEventListener('install', (event) => {
     self.skipWaiting();
 });
 
-// Ativa e limpa caches antigos
+// Remove caches antigos para carregar sempre a versão nova
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
@@ -33,7 +33,7 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Intercepta as requisições para funcionar offline
+// Intercepta as requisições para o modo offline
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request)
